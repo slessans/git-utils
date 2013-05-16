@@ -16,7 +16,9 @@ parser = argparse.ArgumentParser(description='Sum commit history into list. Help
 								'summarizing release notes eg for test flight. ' +
 								'Splits up messages by semi-colon and new lines.')
 parser.add_argument('num_commits', metavar='N', type=int, default=1, nargs='?',
-                   help='integer > 0, how many previous commits to use in summary')
+                   help='integer. how many previous commits to use in summary. ' +
+                   'if 0, just shows last commit. If negative, same as positive so ' +
+                   '-3 is the same as 3 and so on.')
                    
 parser.add_argument('--sep', dest='sep', type=str, default=";",
                    help='Split up commit messages by this separator (default: ";").')
@@ -29,8 +31,11 @@ num_commits = args.num_commits;
 show_details = args.show_details;
 sep = args.sep;
 
-if num_commits <= 0 :
-	raise argparse.ArgumentTypeError("N must be > 0")
+if num_commits == 0 :
+	num_commits = 1
+
+if num_commits < 0 :
+	num_commits = num_commits * -1
 	
 output_str = subprocess.check_output("git status 2>/dev/null | tail -n 1", shell=True)
 if output_str == "" :
