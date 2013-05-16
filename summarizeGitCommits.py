@@ -4,6 +4,7 @@ import subprocess
 import sys
 import argparse
 
+# originally from http://davidchambersdesign.com/converting-integers-to-ordinals/
 def ordinal(n):
     if 10 < n < 14: return u'%sth' % n
     if n % 10 == 1: return u'%sst' % n
